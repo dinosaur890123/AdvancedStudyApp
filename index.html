@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/study-icon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced Study App</title>
+    <meta name="description" content="Advanced study app with spaced repetition flashcards, note-taking, and progress tracking" />
+    
+    <!-- Material Design 3 Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#2e7d32" />
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/src/main.js" as="script" />
+    <link rel="preload" href="/src/style.css" as="style" />
+</head>
+<body>
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1 class="md-headline-medium">
+                    StudyPro
+                </h1>
+            </div>
+            <div class="nav-menu">
+                <button class="nav-btn active" data-tab="dashboard">
+                    <span class="material-icons">dashboard</span>
+                    Dashboard
+                </button>
+                <button class="nav-btn" data-tab="flashcards">
+                    <span class="material-icons">style</span>
+                    Flashcards
+                </button>
+                <button class="nav-btn" data-tab="notes">
+                    <span class="material-icons">note</span>
+                    Notes
+                </button>
+                <button class="nav-btn" data-tab="timer">
+                    <span class="material-icons">timer</span>
+                    Timer
+                </button>
+                <button class="nav-btn" data-tab="analytics">
+                    <span class="material-icons">analytics</span>
+                    Analytics
+                </button>
+                <button class="theme-toggle btn text" id="themeToggle" title="Toggle theme">
+                    <span class="material-icons">brightness_6</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <div class="dashboard-grid">
+                    <div class="md-card elevated stats-card">
+                        <div class="md-card-content">
+                            <h3 class="md-title-large">Today's Progress</h3>
+                            <div class="stat-number" id="todayCards">0</div>
+                            <p class="md-body-medium">Cards reviewed</p>
+                        </div>
+                    </div>
+                    <div class="md-card elevated stats-card">
+                        <div class="md-card-content">
+                            <h3 class="md-title-large">Study Streak</h3>
+                            <div class="stat-number" id="studyStreak">0</div>
+                            <p class="md-body-medium">Days in a row</p>
+                        </div>
+                    </div>
+                    <div class="md-card elevated stats-card">
+                        <div class="md-card-content">
+                            <h3 class="md-title-large">Total Cards</h3>
+                            <div class="stat-number" id="totalCards">0</div>
+                            <p class="md-body-medium">In your collection</p>
+                        </div>
+                    </div>
+                    <div class="md-card elevated stats-card">
+                        <div class="md-card-content">
+                            <h3 class="md-title-large">Focus Time</h3>
+                            <div class="stat-number" id="focusTime">0</div>
+                            <p class="md-body-medium">Minutes today</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <h3 class="md-headline-small">
+                        <span class="material-icons">bolt</span>
+                        Quick Actions
+                    </h3>
+                    <div class="action-buttons">
+                        <button class="btn primary" data-action="review">
+                            <span class="material-icons">quiz</span>
+                            Review Cards
+                        </button>
+                        <button class="btn tonal" data-action="new-card">
+                            <span class="material-icons">add</span>
+                            Add Card
+                        </button>
+                        <button class="btn tonal" data-action="new-note">
+                            <span class="material-icons">edit_note</span>
+                            New Note
+                        </button>
+                        <button class="btn tonal" data-action="start-timer">
+                            <span class="material-icons">play_arrow</span>
+                            Start Timer
+                        </button>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h3 class="md-headline-small">
+                        <span class="material-icons">trending_up</span>
+                        Recent Activity
+                    </h3>
+                    <div id="recentList" class="activity-list">
+                        <p class="empty-state md-body-large">No recent activity. Start studying to see your progress!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flashcards Tab -->
+            <div id="flashcards" class="tab-content">
+                <div class="flashcard-header">
+                    <h2>Flashcards</h2>
+                    <div class="flashcard-controls">
+                        <button class="btn primary" id="addCardBtn">➕ Add Card</button>
+                        <button class="btn secondary" id="importCardsBtn">📥 Import</button>
+                        <button class="btn secondary" id="exportCardsBtn">📤 Export</button>
+                    </div>
+                </div>
+
+                <div class="flashcard-filters">
+                    <div class="filter-group">
+                        <label for="cardSubjectFilter">Filter by Subject:</label>
+                        <select id="cardSubjectFilter">
+                            <option value="">All Subjects</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="deckSelect">Deck:</label>
+                        <select id="deckSelect">
+                            <option value="default">Default Deck</option>
+                        </select>
+                        <button class="btn small" id="newDeckBtn">New Deck</button>
+                    </div>
+                </div>
+
+                <div class="card-stats" id="cardStats">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Cards:</span>
+                        <span class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Due for Review:</span>
+                        <span class="stat-value">0</span>
+                    </div>
+                </div>
+
+                <div class="subject-review-section">
+                    <h3>Review by Subject</h3>
+                    <div class="subject-review-grid" id="subjectReviewButtons">
+                        <!-- Subject review cards will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div id="reviewArea" class="review-area" style="display: none;">
+                    <div class="card-container">
+                        <div class="flashcard" id="currentCard">
+                            <div class="card-front">
+                                <div class="card-content" id="cardFront"></div>
+                            </div>
+                            <div class="card-back" style="display: none;">
+                                <div class="card-content" id="cardBack"></div>
+                            </div>
+                        </div>
+                        <button class="flip-btn" id="flipCard">Show Answer</button>
+                    </div>
+                    
+                    <div class="review-buttons" id="reviewButtons" style="display: none;">
+                        <button class="review-btn hard" data-difficulty="1">Hard</button>
+                        <button class="review-btn good" data-difficulty="2">Good</button>
+                        <button class="review-btn easy" data-difficulty="3">Easy</button>
+                    </div>
+                </div>
+
+                <div id="cardsList" class="cards-list">
+                    <div class="cards-grid" id="cardsGrid">
+                        <p class="empty-state">No cards yet. Create your first flashcard!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes Tab -->
+            <div id="notes" class="tab-content">
+                <div class="notes-header">
+                    <h2>Notes</h2>
+                    <div class="notes-header-actions">
+                        <button class="btn secondary" id="manageSubjectsBtn">📚 Manage Subjects</button>
+                        <button class="btn primary" id="newNoteBtn">📝 New Note</button>
+                    </div>
+                </div>
+                
+                <div class="notes-layout">
+                    <div class="notes-sidebar">
+                        <div class="subject-selector">
+                            <label for="subjectSelect">Subject:</label>
+                            <select id="subjectSelect">
+                                <option value="">All Subjects</option>
+                            </select>
+                        </div>
+                        
+                        <div class="topic-selector" style="display: none;">
+                            <label for="topicSelect">Topic:</label>
+                            <select id="topicSelect">
+                                <option value="">All Topics</option>
+                            </select>
+                            <button class="btn small" id="newTopicBtn">+ Topic</button>
+                        </div>
+                        
+                        <div class="search-bar">
+                            <input type="text" id="noteSearch" placeholder="Search notes..." />
+                        </div>
+                        
+                        <div id="notesList" class="notes-list">
+                            <p class="empty-state">No notes yet. Create your first note!</p>
+                        </div>
+                    </div>
+                    
+                    <div class="note-editor" id="noteEditor" style="display: none;">
+                        <div class="note-meta">
+                            <input type="text" id="noteTitle" placeholder="Note title..." />
+                            <div class="note-organization">
+                                <select id="noteSubject">
+                                    <option value="">Select Subject</option>
+                                </select>
+                                <select id="noteTopic">
+                                    <option value="">Select Topic</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="editor-toolbar">
+                            <button class="toolbar-btn" data-command="bold"><b>B</b></button>
+                            <button class="toolbar-btn" data-command="italic"><i>I</i></button>
+                            <button class="toolbar-btn" data-command="underline"><u>U</u></button>
+                            <button class="toolbar-btn" data-command="insertUnorderedList">• List</button>
+                        </div>
+                        <div id="noteContent" class="note-content" contenteditable="true" placeholder="Start writing your note..."></div>
+                        <div class="editor-actions">
+                            <button class="btn secondary" id="saveNote">💾 Save</button>
+                            <button class="btn danger" id="deleteNote">🗑 Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timer Tab -->
+            <div id="timer" class="tab-content">
+                <div class="timer-container">
+                    <h2>Pomodoro Timer</h2>
+                    
+                    <div class="timer-display">
+                        <div class="timer-circle">
+                            <svg class="timer-svg" width="200" height="200">
+                                <circle cx="100" cy="100" r="90" class="timer-bg"></circle>
+                                <circle cx="100" cy="100" r="90" class="timer-progress" id="timerProgress"></circle>
+                            </svg>
+                            <div class="timer-text">
+                                <div class="timer-time" id="timerTime">25:00</div>
+                                <div class="timer-label" id="timerLabel">Focus Time</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timer-controls">
+                        <button class="timer-btn start" id="startTimer">▶️ Start</button>
+                        <button class="timer-btn pause" id="pauseTimer" style="display: none;">⏸️ Pause</button>
+                        <button class="timer-btn reset" id="resetTimer">🔄 Reset</button>
+                    </div>
+
+                    <div class="timer-settings">
+                        <h3>Settings</h3>
+                        <div class="setting-group">
+                            <label>Focus Time: <span id="focusTimeValue">25</span> min</label>
+                            <input type="range" id="focusTimeSlider" min="15" max="60" value="25" />
+                        </div>
+                        <div class="setting-group">
+                            <label>Break Time: <span id="breakTimeValue">5</span> min</label>
+                            <input type="range" id="breakTimeSlider" min="3" max="15" value="5" />
+                        </div>
+                    </div>
+
+                    <div class="session-stats">
+                        <h3>Today's Sessions</h3>
+                        <div class="session-grid">
+                            <div class="session-stat">
+                                <span class="session-number" id="completedSessions">0</span>
+                                <span class="session-label">Completed</span>
+                            </div>
+                            <div class="session-stat">
+                                <span class="session-number" id="totalFocusTime">0</span>
+                                <span class="session-label">Minutes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Tab -->
+            <div id="analytics" class="tab-content">
+                <h2>Study Analytics</h2>
+                
+                <div class="analytics-grid">
+                    <div class="chart-container">
+                        <h3>Daily Study Time</h3>
+                        <canvas id="studyTimeChart" width="400" height="200"></canvas>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3>Card Performance</h3>
+                        <canvas id="performanceChart" width="400" height="200"></canvas>
+                    </div>
+                    
+                    <div class="stats-summary">
+                        <h3>Summary</h3>
+                        <div class="summary-stats">
+                            <div class="summary-item">
+                                <span class="summary-label">Average Session</span>
+                                <span class="summary-value" id="avgSession">0 min</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Cards Mastered</span>
+                                <span class="summary-value" id="cardsMastered">0</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Success Rate</span>
+                                <span class="summary-value" id="successRate">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="cardModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="cardModalTitle">Add New Card</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="cardForm">
+                    <div class="form-group">
+                        <label for="cardSubject">Subject:</label>
+                        <select id="cardSubject">
+                            <option value="">Select Subject</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cardFrontInput">Front (Question):</label>
+                        <textarea id="cardFrontInput" rows="3" placeholder="Enter question or prompt..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="cardBackInput">Back (Answer):</label>
+                        <textarea id="cardBackInput" rows="3" placeholder="Enter answer or explanation..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="cardTags">Tags (comma-separated):</label>
+                        <input type="text" id="cardTags" placeholder="e.g., math, algebra, equations" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="cancelCard">Cancel</button>
+                <button class="btn primary" id="saveCard">Save Card</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subject Management Modal -->
+    <div id="subjectModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Manage Subjects</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="subject-form">
+                    <h4>Add New Subject</h4>
+                    <div class="form-group">
+                        <label for="subjectName">Subject Name:</label>
+                        <input type="text" id="subjectName" placeholder="e.g., Mathematics, Biology, History" />
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectColor">Color:</label>
+                        <div class="color-picker">
+                            <input type="color" id="subjectColor" value="#6366f1" />
+                            <div class="color-presets">
+                                <button class="color-preset" data-color="#6366f1" style="background: #6366f1;"></button>
+                                <button class="color-preset" data-color="#10b981" style="background: #10b981;"></button>
+                                <button class="color-preset" data-color="#f59e0b" style="background: #f59e0b;"></button>
+                                <button class="color-preset" data-color="#ef4444" style="background: #ef4444;"></button>
+                                <button class="color-preset" data-color="#8b5cf6" style="background: #8b5cf6;"></button>
+                                <button class="color-preset" data-color="#06b6d4" style="background: #06b6d4;"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn primary" id="addSubjectBtn">Add Subject</button>
+                </div>
+                
+                <div class="subjects-list">
+                    <h4>Existing Subjects</h4>
+                    <div id="subjectsList">
+                        <!-- Subjects will be populated here -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="closeSubjectModal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Topic Management Modal -->
+    <div id="topicModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="topicModalTitle">Add Topic</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="topicName">Topic Name:</label>
+                    <input type="text" id="topicName" placeholder="e.g., Calculus, Cell Biology, World War II" />
+                </div>
+                <div class="form-group">
+                    <label for="topicDescription">Description (optional):</label>
+                    <textarea id="topicDescription" rows="3" placeholder="Brief description of this topic..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="cancelTopic">Cancel</button>
+                <button class="btn primary" id="saveTopic">Save Topic</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>
