@@ -1,0 +1,21 @@
+{
+  "name": "StudyPro",
+  "short_name": "StudyPro",
+  "description": "Advanced study app with spaced repetition flashcards, note-taking, and progress tracking",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fdfdf5",
+  "theme_color": "#2e7d32",
+  "icons": [
+    {
+      "src": "/study-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/study-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

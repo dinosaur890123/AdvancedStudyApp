@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/AdvancedStudyApp/study-icon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudyPro - Advanced Study App</title>
+    <meta name="description" content="Advanced study app with spaced repetition flashcards, note-taking, and progress tracking" />
+    
+    <!-- Material Design 3 Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#2e7d32" />
+    <link rel="manifest" href="/AdvancedStudyApp/manifest.json" />
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/AdvancedStudyApp/study-icon.svg" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <script type="module" crossorigin src="/AdvancedStudyApp/assets/index-DcndCSU5.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1 class="md-headline-medium">
+                    StudyPro
+                </h1>
+            </div>
+            <div class="nav-menu">
+                <button class="nav-btn active" data-tab="dashboard">
+                    <span class="material-icons">dashboard</span>
+                    Dashboard
+                </button>
+                <button class="nav-btn" data-tab="flashcards">
+                    <span class="material-icons">style</span>
+                    Flashcards
+                </button>
+                <button class="nav-btn" data-tab="notes">
+                    <span class="material-icons">note</span>
+                    Notes
+                </button>
+                <button class="nav-btn" data-tab="timer">
+                    <span class="material-icons">timer</span>
+                    Timer
+                </button>
+                <button class="nav-btn" data-tab="analytics">
+                    <span class="material-icons">analytics</span>
+                    Analytics
+                </button>
+                <button class="nav-btn theme-toggle" id="theme-toggle">
+                    <span class="material-icons">dark_mode</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Dashboard Tab -->
+        <div class="tab-content active" id="dashboard">
+            <div class="container">
+                <div class="dashboard-header">
+                    <h2 class="md-headline-large">Dashboard</h2>
+                    <p class="md-body-large">Welcome back! Track your progress and continue your learning journey.</p>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <!-- Today's Progress -->
+                    <div class="dashboard-card">
+                        <h3 class="md-headline-small">Today's Progress</h3>
+                        <div class="progress-stat">
+                            <span class="stat-number" id="today-cards">0</span>
+                            <span class="stat-label">Cards reviewed</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Study Streak -->
+                    <div class="dashboard-card">
+                        <h3 class="md-headline-small">Study Streak</h3>
+                        <div class="progress-stat">
+                            <span class="stat-number" id="study-streak">0</span>
+                            <span class="stat-label">Days in a row</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Total Cards -->
+                    <div class="dashboard-card">
+                        <h3 class="md-headline-small">Total Cards</h3>
+                        <div class="progress-stat">
+                            <span class="stat-number" id="total-cards">0</span>
+                            <span class="stat-label">In your collection</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Focus Time -->
+                    <div class="dashboard-card">
+                        <h3 class="md-headline-small">Focus Time</h3>
+                        <div class="progress-stat">
+                            <span class="stat-number" id="focus-time">0</span>
+                            <span class="stat-label">Minutes today</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h3 class="md-headline-small">⚡ Quick Actions</h3>
+                    <div class="action-buttons">
+                        <button class="action-btn primary" id="review-cards">
+                            <span class="material-icons">style</span>
+                            Review Cards
+                        </button>
+                        <button class="action-btn" id="add-card">
+                            <span class="material-icons">add</span>
+                            Add Card
+                        </button>
+                        <button class="action-btn" id="new-note">
+                            <span class="material-icons">note_add</span>
+                            New Note
+                        </button>
+                        <button class="action-btn" id="start-timer">
+                            <span class="material-icons">play_arrow</span>
+                            Start Timer
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Recent Activity -->
+                <div class="recent-activity">
+                    <h3 class="md-headline-small">📊 Recent Activity</h3>
+                    <div class="activity-list" id="activity-list">
+                        <p class="no-activity">No recent activity. Start studying to see your progress!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flashcards Tab -->
+        <div class="tab-content" id="flashcards">
+            <div class="container">
+                <div class="flashcards-header">
+                    <h2 class="md-headline-large">Flashcards</h2>
+                    <div class="flashcard-controls">
+                        <button class="btn primary" id="add-flashcard">
+                            <span class="material-icons">add</span>
+                            Add Card
+                        </button>
+                        <button class="btn" id="import-cards">
+                            <span class="material-icons">upload_file</span>
+                            Import
+                        </button>
+                        <button class="btn" id="export-cards">
+                            <span class="material-icons">download</span>
+                            Export
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="flashcard-filters">
+                    <div class="filter-group">
+                        <label for="subject-filter">Filter by Subject:</label>
+                        <select id="subject-filter">
+                            <option value="">All Subjects</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="deck-filter">Deck:</label>
+                        <select id="deck-filter">
+                            <option value="">Default Deck</option>
+                        </select>
+                        <button class="btn-sm" id="new-deck">New Deck</button>
+                    </div>
+                </div>
+                
+                <div class="flashcard-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Cards:</span>
+                        <span class="stat-value" id="flashcard-total">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Due for Review:</span>
+                        <span class="stat-value" id="flashcard-due">0</span>
+                    </div>
+                </div>
+                
+                <div class="review-section">
+                    <h3 class="md-headline-small">Review by Subject</h3>
+                    <div class="subject-list" id="subject-list">
+                        <p class="no-cards">No cards yet. <a href="#" id="create-first-card">Create your first flashcard!</a></p>
+                    </div>
+                </div>
+                
+                <div class="flashcard-list" id="flashcard-list">
+                    <!-- Flashcards will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Notes Tab -->
+        <div class="tab-content" id="notes">
+            <div class="container">
+                <div class="notes-header">
+                    <h2 class="md-headline-large">Notes</h2>
+                    <button class="btn primary" id="add-note">
+                        <span class="material-icons">add</span>
+                        New Note
+                    </button>
+                </div>
+                
+                <div class="notes-grid" id="notes-grid">
+                    <div class="empty-state">
+                        <span class="material-icons">note</span>
+                        <h3>No notes yet</h3>
+                        <p>Create your first note to get started!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timer Tab -->
+        <div class="tab-content" id="timer">
+            <div class="container">
+                <div class="timer-header">
+                    <h2 class="md-headline-large">Pomodoro Timer</h2>
+                    <p class="md-body-large">Stay focused with the Pomodoro Technique</p>
+                </div>
+                
+                <div class="timer-container">
+                    <div class="timer-display">
+                        <div class="timer-circle">
+                            <canvas id="timer-canvas" width="300" height="300"></canvas>
+                            <div class="timer-time">
+                                <span id="timer-minutes">25</span>
+                                <span class="timer-colon">:</span>
+                                <span id="timer-seconds">00</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timer-controls">
+                        <button class="btn primary" id="start-pause-timer">
+                            <span class="material-icons">play_arrow</span>
+                            Start
+                        </button>
+                        <button class="btn" id="reset-timer">
+                            <span class="material-icons">refresh</span>
+                            Reset
+                        </button>
+                    </div>
+                    
+                    <div class="timer-settings">
+                        <div class="setting-group">
+                            <label for="work-duration">Work Duration (minutes):</label>
+                            <input type="number" id="work-duration" min="1" max="60" value="25">
+                        </div>
+                        <div class="setting-group">
+                            <label for="break-duration">Break Duration (minutes):</label>
+                            <input type="number" id="break-duration" min="1" max="30" value="5">
+                        </div>
+                    </div>
+                    
+                    <div class="timer-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Sessions Today:</span>
+                            <span class="stat-value" id="sessions-today">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Focus Time:</span>
+                            <span class="stat-value" id="focus-time-today">0 min</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div class="tab-content" id="analytics">
+            <div class="container">
+                <div class="analytics-header">
+                    <h2 class="md-headline-large">Analytics</h2>
+                    <p class="md-body-large">Track your learning progress and insights</p>
+                </div>
+                
+                <div class="analytics-grid">
+                    <div class="chart-container">
+                        <h3 class="md-headline-small">Study Progress</h3>
+                        <canvas id="progress-chart" width="400" height="200"></canvas>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3 class="md-headline-small">Subject Distribution</h3>
+                        <canvas id="subject-chart" width="400" height="200"></canvas>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3 class="md-headline-small">Performance Trends</h3>
+                        <canvas id="performance-chart" width="400" height="200"></canvas>
+                    </div>
+                    
+                    <div class="stats-summary">
+                        <h3 class="md-headline-small">Summary</h3>
+                        <div class="summary-grid">
+                            <div class="summary-item">
+                                <span class="summary-number" id="total-study-time">0</span>
+                                <span class="summary-label">Total Study Time</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-number" id="average-accuracy">0%</span>
+                                <span class="summary-label">Average Accuracy</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-number" id="total-reviews">0</span>
+                                <span class="summary-label">Total Reviews</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="flashcard-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="md-headline-small">Add Flashcard</h3>
+                <button class="modal-close" id="close-flashcard-modal">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="card-front">Front (Question):</label>
+                    <textarea id="card-front" placeholder="Enter the question or prompt"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="card-back">Back (Answer):</label>
+                    <textarea id="card-back" placeholder="Enter the answer"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="card-subject">Subject:</label>
+                    <input type="text" id="card-subject" placeholder="e.g., Math, Science, History">
+                </div>
+                <div class="form-group">
+                    <label for="card-deck">Deck:</label>
+                    <select id="card-deck">
+                        <option value="default">Default Deck</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="cancel-flashcard">Cancel</button>
+                <button class="btn primary" id="save-flashcard">Save Card</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="note-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="md-headline-small">New Note</h3>
+                <button class="modal-close" id="close-note-modal">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="note-title">Title:</label>
+                    <input type="text" id="note-title" placeholder="Enter note title">
+                </div>
+                <div class="form-group">
+                    <label for="note-content">Content:</label>
+                    <textarea id="note-content" placeholder="Enter your note content"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="note-tags">Tags:</label>
+                    <input type="text" id="note-tags" placeholder="Enter tags separated by commas">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="cancel-note">Cancel</button>
+                <button class="btn primary" id="save-note">Save Note</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="review-modal">
+        <div class="modal-content review-content">
+            <div class="review-header">
+                <h3 class="md-headline-small">Review Session</h3>
+                <div class="review-progress">
+                    <span id="review-current">1</span> / <span id="review-total">10</span>
+                </div>
+                <button class="modal-close" id="close-review-modal">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="review-body">
+                <div class="flashcard-review">
+                    <div class="card-side" id="card-front-review">
+                        <div class="card-content" id="current-card-front">
+                            Click to reveal answer
+                        </div>
+                    </div>
+                    <div class="card-side hidden" id="card-back-review">
+                        <div class="card-content" id="current-card-back">
+                            Answer will appear here
+                        </div>
+                    </div>
+                </div>
+                <button class="btn primary flip-btn" id="flip-card">Show Answer</button>
+            </div>
+            <div class="review-footer hidden" id="review-buttons">
+                <button class="btn danger" id="review-again">
+                    <span class="material-icons">thumb_down</span>
+                    Again
+                </button>
+                <button class="btn warning" id="review-hard">
+                    <span class="material-icons">sentiment_dissatisfied</span>
+                    Hard
+                </button>
+                <button class="btn success" id="review-good">
+                    <span class="material-icons">sentiment_satisfied</span>
+                    Good
+                </button>
+                <button class="btn primary" id="review-easy">
+                    <span class="material-icons">sentiment_very_satisfied</span>
+                    Easy
+                </button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
