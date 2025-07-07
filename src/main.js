@@ -158,15 +158,11 @@ class StudyApp {
     }
     
     updateDashboard() {
-        const today = new Date().toDateString();
-        const todayStats = this.analytics[today] || { cardsReviewed: 0, focusTime: 0 };
-        
-        // Set dashboard stats to 0
+        // Set dashboard stats to 0 (analytics removed)
         document.getElementById('today-cards').textContent = 0;
         document.getElementById('total-cards').textContent = this.flashcards.length;
         document.getElementById('focus-time').textContent = 0;
         document.getElementById('study-streak').textContent = 0;
-        
         this.updateRecentActivity();
     }
     
@@ -196,23 +192,8 @@ class StudyApp {
     }
     
     calculateStudyStreak() {
-        const today = new Date();
-        let streak = 0;
-        let checkDate = new Date(today);
-        
-        while (true) {
-            const dateString = checkDate.toDateString();
-            const dayStats = this.analytics[dateString];
-            
-            if (!dayStats || dayStats.cardsReviewed === 0) {
-                break;
-            }
-            
-            streak++;
-            checkDate.setDate(checkDate.getDate() - 1);
-        }
-        
-        return streak;
+        // Analytics removed, always return 0
+        return 0;
     }
     
     updateFlashcardTab() {
@@ -502,16 +483,20 @@ class StudyApp {
     
     showNoteModal() {
         const modal = document.getElementById('note-modal');
-        modal.classList.add('show');
-        document.getElementById('note-title').focus();
+        if (modal) {
+            modal.classList.add('show');
+            document.getElementById('note-title')?.focus();
+        }
     }
-    
+
     hideNoteModal() {
         const modal = document.getElementById('note-modal');
-        modal.classList.remove('show');
-        this.clearNoteForm();
+        if (modal) {
+            modal.classList.remove('show');
+            this.clearNoteForm();
+        }
     }
-    
+
     clearNoteForm() {
         document.getElementById('note-title').value = '';
         document.getElementById('note-content').value = '';
@@ -610,7 +595,7 @@ class StudyApp {
     timerComplete() {
         clearInterval(this.timerInterval);
         this.timerState.isRunning = false;
-        
+
         if (this.timerState.isBreak) {
             // Break completed, start work session
             this.timerState.isBreak = false;
@@ -620,21 +605,12 @@ class StudyApp {
             // Work session completed
             this.timerState.sessionsToday++;
             this.timerState.focusTimeToday += this.timerState.workDuration;
-            
-            // Update analytics
-            const today = new Date().toDateString();
-            if (!this.analytics[today]) {
-                this.analytics[today] = { cardsReviewed: 0, focusTime: 0 };
-            }
-            this.analytics[today].focusTime += this.timerState.workDuration;
-            this.saveAnalytics();
-            
             // Start break
             this.timerState.isBreak = true;
             this.timerState.timeLeft = this.timerState.breakDuration * 60;
             alert('Work session complete! Time for a break.');
         }
-        
+
         this.updateTimer();
         this.updateTimerButton();
         this.saveTimerStats();
