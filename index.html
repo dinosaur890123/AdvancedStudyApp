@@ -18,12 +18,15 @@
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#2e7d32" />
     <link rel="manifest" href="/AdvancedStudyApp/manifest.json" />
+
+    <!-- Main CSS -->
     
     <!-- Apple Touch Icons -->
     <link rel="apple-touch-icon" href="/AdvancedStudyApp/study-icon.svg" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <script type="module" crossorigin src="/AdvancedStudyApp/assets/index-DcndCSU5.js"></script>
+  <script type="module" crossorigin src="/AdvancedStudyApp/assets/index-lZhdsWtN.js"></script>
+  <link rel="stylesheet" crossorigin href="/AdvancedStudyApp/assets/index-DV6mnMkm.css">
 </head>
 <body>
     <div id="app">
@@ -50,13 +53,6 @@
                 <button class="nav-btn" data-tab="timer">
                     <span class="material-icons">timer</span>
                     Timer
-                </button>
-                <button class="nav-btn" data-tab="analytics">
-                    <span class="material-icons">analytics</span>
-                    Analytics
-                </button>
-                <button class="nav-btn theme-toggle" id="theme-toggle">
-                    <span class="material-icons">dark_mode</span>
                 </button>
             </div>
         </nav>
@@ -272,51 +268,6 @@
                         <div class="stat-item">
                             <span class="stat-label">Focus Time:</span>
                             <span class="stat-value" id="focus-time-today">0 min</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Analytics Tab -->
-        <div class="tab-content" id="analytics">
-            <div class="container">
-                <div class="analytics-header">
-                    <h2 class="md-headline-large">Analytics</h2>
-                    <p class="md-body-large">Track your learning progress and insights</p>
-                </div>
-                
-                <div class="analytics-grid">
-                    <div class="chart-container">
-                        <h3 class="md-headline-small">Study Progress</h3>
-                        <canvas id="progress-chart" width="400" height="200"></canvas>
-                    </div>
-                    
-                    <div class="chart-container">
-                        <h3 class="md-headline-small">Subject Distribution</h3>
-                        <canvas id="subject-chart" width="400" height="200"></canvas>
-                    </div>
-                    
-                    <div class="chart-container">
-                        <h3 class="md-headline-small">Performance Trends</h3>
-                        <canvas id="performance-chart" width="400" height="200"></canvas>
-                    </div>
-                    
-                    <div class="stats-summary">
-                        <h3 class="md-headline-small">Summary</h3>
-                        <div class="summary-grid">
-                            <div class="summary-item">
-                                <span class="summary-number" id="total-study-time">0</span>
-                                <span class="summary-label">Total Study Time</span>
-                            </div>
-                            <div class="summary-item">
-                                <span class="summary-number" id="average-accuracy">0%</span>
-                                <span class="summary-label">Average Accuracy</span>
-                            </div>
-                            <div class="summary-item">
-                                <span class="summary-number" id="total-reviews">0</span>
-                                <span class="summary-label">Total Reviews</span>
-                            </div>
                         </div>
                     </div>
                 </div>
