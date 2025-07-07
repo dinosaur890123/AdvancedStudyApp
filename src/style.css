@@ -2051,3 +2051,134 @@ body::before {
 .form-group textarea::placeholder {
   color: var(--md-sys-color-outline);
 }
+
+/* Timer Tab */
+.timer-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.timer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 32px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-blur);
+  -webkit-backdrop-filter: var(--glass-backdrop-blur);
+  border-radius: var(--border-radius-xl);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg);
+}
+
+.timer-display {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin-bottom: 16px;
+}
+
+.timer-circle {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#timer-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg); /* Start from the top */
+}
+
+.timer-time {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: baseline;
+  color: var(--text-primary);
+  font-family: 'Google Sans', system-ui, sans-serif;
+  font-size: 72px;
+  font-weight: 500;
+}
+
+.timer-colon {
+  margin: 0 4px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.timer-controls {
+  display: flex;
+  gap: 16px;
+}
+
+.timer-controls .btn {
+  min-width: 140px;
+}
+
+.timer-settings {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  justify-content: center;
+}
+
+.setting-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.setting-group label {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.setting-group input {
+  width: 80px;
+  padding: 8px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  text-align: center;
+  font-size: 16px;
+}
+
+.timer-stats {
+  display: flex;
+  gap: 32px;
+  text-align: center;
+  margin-top: 16px;
+}
+
+.timer-stats .stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.timer-stats .stat-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.timer-stats .stat-value {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
