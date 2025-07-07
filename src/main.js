@@ -5,7 +5,6 @@ class StudyApp {
     constructor() {
         this.flashcards = JSON.parse(localStorage.getItem('studyapp-flashcards') || '[]');
         this.notes = JSON.parse(localStorage.getItem('studyapp-notes') || '[]');
-        this.analytics = JSON.parse(localStorage.getItem('studyapp-analytics') || '{}');
         this.settings = JSON.parse(localStorage.getItem('studyapp-settings') || '{}');
         
         this.currentTab = 'dashboard';
@@ -140,9 +139,6 @@ class StudyApp {
             case 'notes':
                 this.updateNotesTab();
                 break;
-            case 'analytics':
-                this.updateAnalytics();
-                break;
         }
     }
     
@@ -165,10 +161,11 @@ class StudyApp {
         const today = new Date().toDateString();
         const todayStats = this.analytics[today] || { cardsReviewed: 0, focusTime: 0 };
         
-        document.getElementById('today-cards').textContent = todayStats.cardsReviewed;
+        // Set dashboard stats to 0
+        document.getElementById('today-cards').textContent = 0;
         document.getElementById('total-cards').textContent = this.flashcards.length;
-        document.getElementById('focus-time').textContent = todayStats.focusTime;
-        document.getElementById('study-streak').textContent = this.calculateStudyStreak();
+        document.getElementById('focus-time').textContent = 0;
+        document.getElementById('study-streak').textContent = 0;
         
         this.updateRecentActivity();
     }
@@ -408,14 +405,6 @@ class StudyApp {
     reviewCard(quality) {
         const card = this.reviewSession.cards[this.reviewSession.currentIndex];
         this.updateCardSpacedRepetition(card, quality);
-        
-        // Update analytics
-        const today = new Date().toDateString();
-        if (!this.analytics[today]) {
-            this.analytics[today] = { cardsReviewed: 0, focusTime: 0 };
-        }
-        this.analytics[today].cardsReviewed++;
-        this.saveAnalytics();
         
         // Move to next card
         this.reviewSession.currentIndex++;
@@ -732,64 +721,6 @@ class StudyApp {
         
         document.getElementById('sessions-today').textContent = this.timerState.sessionsToday;
         document.getElementById('focus-time-today').textContent = `${this.timerState.focusTimeToday} min`;
-    }
-    
-    // Analytics functionality
-    updateAnalytics() {
-        this.drawProgressChart();
-        this.drawSubjectChart();
-        this.drawPerformanceChart();
-        this.updateAnalyticsSummary();
-    }
-    
-    drawProgressChart() {
-        const canvas = document.getElementById('progress-chart');
-        if (!canvas) return;
-        
-        // Basic chart drawing - in a real app, you'd use a proper charting library
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        ctx.fillStyle = '#333';
-        ctx.font = '16px Arial';
-        ctx.fillText('Progress Chart - Data visualization would go here', 10, 100);
-    }
-    
-    drawSubjectChart() {
-        const canvas = document.getElementById('subject-chart');
-        if (!canvas) return;
-        
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        ctx.fillStyle = '#333';
-        ctx.font = '16px Arial';
-        ctx.fillText('Subject Distribution - Pie chart would go here', 10, 100);
-    }
-    
-    drawPerformanceChart() {
-        const canvas = document.getElementById('performance-chart');
-        if (!canvas) return;
-        
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        ctx.fillStyle = '#333';
-        ctx.font = '16px Arial';
-        ctx.fillText('Performance Trends - Line chart would go here', 10, 100);
-    }
-    
-    updateAnalyticsSummary() {
-        const totalStudyTime = Object.values(this.analytics).reduce((sum, day) => sum + (day.focusTime || 0), 0);
-        const totalReviews = Object.values(this.analytics).reduce((sum, day) => sum + (day.cardsReviewed || 0), 0);
-        
-        document.getElementById('total-study-time').textContent = `${totalStudyTime} min`;
-        document.getElementById('total-reviews').textContent = totalReviews;
-        document.getElementById('average-accuracy').textContent = '85%'; // Placeholder
-    }
-    
-    saveAnalytics() {
-        localStorage.setItem('studyapp-analytics', JSON.stringify(this.analytics));
     }
 }
 
